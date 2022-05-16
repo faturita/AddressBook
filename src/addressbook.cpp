@@ -10,79 +10,43 @@
 #include <regex>
 
 #include "commandline.h"
-
-
+#include "addressbookentry.h"
 
 // Starting time 00:32
 
-
-class AddressBookEntry
-{
-    std::string Name;
-    std::string LastName;
-    std::string phoneNumber;
-
-public:
-    AddressBookEntry()
-    {
-
-    }
-
-    AddressBookEntry(std::string name, std::string lastname, std::string phone)
-    {
-        AddressBookEntry::Name = name;
-        AddressBookEntry::LastName = lastname;
-        AddressBookEntry::phoneNumber = phone;
-    }
-
-    std::string toString() const
-    {
-        std::string str;
-        str.append("Name:").append(Name).append("/").append(LastName);
-        str.append("(").append(phoneNumber).append(")");
-        return str;
-    }
-
-    std::string serialize() const
-    {
-        std::string str;
-        str.append(Name).append("/").append(LastName).append("/").append(phoneNumber).append("/");
-        return str;
-    }
-
-    void deserialize(std::string code)
-    {
-        std::string del("/");
-        std::vector<std::string> tokens;
-
-        auto pos = code.find(del);
-        while (pos != std::string::npos)
-        {
-            std::string str = code.substr(0, pos);
-            code = code.substr(pos + del.length());
-            pos = code.find("/");
-
-            tokens.push_back(str);
-
-
-        }
-
-        Name = tokens[0];
-        LastName = tokens[1];
-        phoneNumber = tokens[2];
-
-        for (const auto &e : tokens) std::cout << e  << std::endl;
-    }
-
-
-};
-
-
 std::vector<AddressBookEntry> addressbook;
+
+void show()
+{
+    int number = 1;
+    for(std::vector<AddressBookEntry>::iterator   it = addressbook.begin(); it != addressbook.end();it++ )
+    {
+        AddressBookEntry entry = *it;
+
+        std::cout << "Entry #" << number << ":" << entry.toString() << std::endl;
+    }
+}
 
 int main(int argc, char *argv[])
 {
-    char *param;
+    std::ifstream ifs("addressbook.w", std::ios_base::binary);
+
+    while (!ifs.eof())
+    {
+        AddressBookEntry ad;
+        std::string code;
+        ifs >> code;
+
+        ad.deserialize(code);
+
+        addressbook.push_back(ad);
+
+        std::string eol;
+        ifs >> eol;
+
+    }
+
+    show();
 
     // # Code each one of the CRUD methods here.
 
@@ -97,28 +61,7 @@ int main(int argc, char *argv[])
 
     }
 
-
-    std::ifstream ss("addressbook.w", std::ios_base::binary);
-
-    AddressBookEntry ad;
-    std::string code;
-    ss >> code;
-
-    std::cout << code << std::endl;
-
-    ad.deserialize(code);
-
-
-    AddressBookEntry ad2("Peter","Karl","074454332");
-
-    addressbook.push_back( ad2 );
-
-    for(std::vector<AddressBookEntry>::iterator   it = addressbook.begin(); it != addressbook.end();it++ )
-    {
-        AddressBookEntry entry = *it;
-
-        std::cout << entry.toString() << std::endl;
-    }
+    show();
 
 
     std::ofstream so("addressbook.w", std::ios_base::binary);

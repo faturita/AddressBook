@@ -3,7 +3,7 @@ CFLAGS = -std=c++14 -w -g -Wall -fpermissive
 PROG = addressbook
 
 
-SCS = src/commandline.cpp 
+SCS = src/addressbookentry.cpp src/commandline.cpp 
 
 SSRC = $(SCS) src/addressbook.cpp 
 OBJS = $(SSRC:.cpp=.o)
