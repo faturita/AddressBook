@@ -2,7 +2,7 @@
 
 # Compiling
 
- make 
+   make 
 
 # Testing
 
