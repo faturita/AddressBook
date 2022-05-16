@@ -90,6 +90,11 @@ std::string AddressBookEntry::GetLastName()
     return LastName;
 }
 
+bool AddressBookEntry::operator==(AddressBookEntry ad)
+{
+    // Phone number could be different but the entry will be the same anyway.
+    return (Name == ad.Name && LastName == ad.LastName);
+}
 
 
 

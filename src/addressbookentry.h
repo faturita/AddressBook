@@ -42,6 +42,8 @@ public:
 
     std::string GetLastName();
 
+    bool operator==(AddressBookEntry ad);
+
 
 };
 

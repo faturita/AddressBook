@@ -4,6 +4,16 @@
 
 #include "addressbookclass.h"
 
+AddressBook::AddressBook()
+{
+    AddressBook::filename = std::string("addressbook.w");
+}
+
+AddressBook::AddressBook(std::string filename)
+{
+    AddressBook::filename = filename;
+}
+
 void AddressBook::show()
 {
     int number = 1;
@@ -15,14 +25,30 @@ void AddressBook::show()
     }
 }
 
+int AddressBook::findEntry(AddressBookEntry ad)
+{
+    int number = 1;
+    for(std::vector<AddressBookEntry>::iterator   it = addressbook.begin(); it != addressbook.end();it++ )
+    {
+        AddressBookEntry entry = *it;
+
+        if (entry == ad)
+        {
+            return number;
+        }
+
+        number++;
+    }
+}
+
 void AddressBook::load()
 {
-    std::ifstream ifpeek("addressbook.w", std::ios_base::binary);
+    std::ifstream ifpeek(filename, std::ios_base::binary);
 
     if (!ifpeek.is_open())
     {
         ifpeek.close();
-        std::ofstream so("addressbook.w", std::ios_base::binary);
+        std::ofstream so(filename, std::ios_base::binary);
         so.close();
     } else {
         ifpeek.close();
@@ -123,5 +149,18 @@ std::vector<AddressBookEntry>::iterator  AddressBook::search(std::string searchk
 std::vector<AddressBookEntry>::iterator AddressBook::end()
 {
     return addressbook.end();
+}
+
+
+std::vector<AddressBookEntry>::iterator AddressBook::begin()
+{
+    return addressbook.begin();
+}
+
+
+AddressBookEntry AddressBook::operator[](size_t pos) {
+    if (pos>=addressbook.size()) return AddressBookEntry();
+
+    return addressbook[pos];
 }
 

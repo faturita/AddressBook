@@ -64,9 +64,15 @@ int main(int argc, char *argv[])
 
         if (it != addressBook.end())
         {
-            AddressBookEntry ad = *it;
+            for(; it != addressBook.end();it++ )
+            {
+                AddressBookEntry ad = *it;
 
-            std::cout << "Found:" << ad.toString() << std::endl;
+                int entryNumber = addressBook.findEntry(ad);
+
+                std::cout << "Found:" << ad.toString() << " at #" << entryNumber << std::endl;
+            }
+
         }
         else
         {

@@ -16,10 +16,13 @@
 #define ADDRESSBOOKCLASS_H
 
 class AddressBook {
-    const std::string filename = std::string("addressbook.w");
+    std::string filename;
     std::vector<AddressBookEntry> addressbook;
 
 public:
+    AddressBook();
+    AddressBook(std::string filename);
+
     void show();
 
     void load();
@@ -35,8 +38,12 @@ public:
 
     std::vector<AddressBookEntry>::iterator search(std::string searchkey);
 
-
     std::vector<AddressBookEntry>::iterator end();
+    std::vector<AddressBookEntry>::iterator begin();
+
+    AddressBookEntry operator[](size_t pos);
+
+    int findEntry(AddressBookEntry ad);
 
 };
 
