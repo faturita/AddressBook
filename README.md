@@ -27,6 +27,7 @@ where [nn] is the test case number, available in src/tests/.
 Currently the infrastructure to create more tests is in place, but there are only two tests:
 
 TC=102.  -  Creates an entry on the addressbook, find it and verify if it exists.
+
 TC=103.  -  Creates two threads that access concurrently the same addressbook, adding and deleting elements.
 
 # Running
