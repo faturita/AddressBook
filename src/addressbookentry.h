@@ -36,6 +36,12 @@ public:
 
     void deserialize(std::string code);
 
+    std::string comp(int sorttype);
+
+    std::string GetName();
+
+    std::string GetLastName();
+
 
 };
 

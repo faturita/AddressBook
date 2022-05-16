@@ -30,6 +30,14 @@ public:
 
     void remove(int entry);
 
+    void sort(int sorttype);
+
+
+    std::vector<AddressBookEntry>::iterator search(std::string searchkey);
+
+
+    std::vector<AddressBookEntry>::iterator end();
+
 };
 
 

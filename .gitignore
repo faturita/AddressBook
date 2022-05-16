@@ -1,0 +1,9 @@
+.DS_Store
+src/*.o
+addressbook.cflags
+addressbook.config
+addressbook.creator
+addressbook.cxxflags
+addressbook.includes
+addressbook.files
+addressbook

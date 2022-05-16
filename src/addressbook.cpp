@@ -46,6 +46,36 @@ int main(int argc, char *argv[])
         addressBook.remove(entry);
     }
 
+    if (isPresentCommandLineParameter(argc,argv,"-namesort"))
+    {
+        addressBook.sort(1);
+    }
+    if (isPresentCommandLineParameter(argc,argv,"-lastsort"))
+    {
+        addressBook.sort(2);
+    }
+
+
+    if (isPresentCommandLineParameter(argc,argv,"-search"))
+    {
+        std::string searchkey(getCommandLineParameter(argc,argv,"-search"));
+
+        std::vector<AddressBookEntry>::iterator it = addressBook.search(searchkey);
+
+        if (it != addressBook.end())
+        {
+            AddressBookEntry ad = *it;
+
+            std::cout << "Found:" << ad.toString() << std::endl;
+        }
+        else
+        {
+            std::cout << "Element not found." << std::endl;
+        }
+    }
+
+
+
     addressBook.show();
     addressBook.save();
 

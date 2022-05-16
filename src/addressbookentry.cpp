@@ -66,3 +66,30 @@ void AddressBookEntry::deserialize(std::string code)
 
     //for (const auto &e : tokens) std::cout << e  << std::endl;
 }
+
+std::string AddressBookEntry::comp(int sorttype)
+{
+    //std::string str;
+
+    //std::transform(data.begin(), data.end(), data.begin(),
+    //    [](unsigned char c){ return std::tolower(c); });
+
+    if (sorttype==1)    return Name;
+    else                return LastName;
+
+}
+
+
+std::string AddressBookEntry::GetName()
+{
+    return Name;
+}
+
+std::string AddressBookEntry::GetLastName()
+{
+    return LastName;
+}
+
+
+
+
