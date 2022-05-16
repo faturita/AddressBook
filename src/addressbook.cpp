@@ -12,54 +12,91 @@
 #include "commandline.h"
 #include "addressbookentry.h"
 
-// Starting time 00:32
+// Starting time 00:32 -> 02:20
+// 08:50
 
-std::vector<AddressBookEntry> addressbook;
 
-void show()
-{
-    int number = 1;
-    for(std::vector<AddressBookEntry>::iterator   it = addressbook.begin(); it != addressbook.end();it++ )
+class AddressBook {
+    const std::string filename = std::string("addressbook.w");
+    std::vector<AddressBookEntry> addressbook;
+
+public:
+    void show()
     {
-        AddressBookEntry entry = *it;
+        int number = 1;
+        for(std::vector<AddressBookEntry>::iterator   it = addressbook.begin(); it != addressbook.end();it++ )
+        {
+            AddressBookEntry entry = *it;
 
-        std::cout << "Entry #" << number++ << ":" << entry.toString() << std::endl;
+            std::cout << "Entry #" << number++ << ":" << entry.toString() << std::endl;
+        }
     }
-}
+
+    void load()
+    {
+        std::ifstream ifpeek("addressbook.w", std::ios_base::binary);
+
+        if (!ifpeek.is_open())
+        {
+            ifpeek.close();
+            std::ofstream so("addressbook.w", std::ios_base::binary);
+            so.close();
+        } else {
+            ifpeek.close();
+        }
+
+       std::ifstream ifs(filename, std::ios_base::binary);
+
+       AddressBookEntry ad;
+       std::string code;
+       ifs >> code;
+
+        while (!ifs.eof())
+        {
+            ad.deserialize(code);
+
+            addressbook.push_back(ad);
+
+            AddressBookEntry ad;
+            ifs >> code;
+
+        }
+
+        ifs.close();
+    }
+
+    void save()
+    {
+        std::ofstream so(filename, std::ios_base::binary);
+
+        for (const auto &e : addressbook) so << e.serialize() << std::endl;
+
+        so.close();
+    }
+
+    void add(AddressBookEntry ad)
+    {
+        addressbook.push_back(ad);
+    }
+
+    void remove(int entry)
+    {
+        // @FIXME Check boundaries.
+        addressbook.erase(addressbook.begin()+entry-1);
+    }
+
+};
+
+
+
+
 
 int main(int argc, char *argv[])
 {
-    std::ifstream ifpeek("addressbook.w", std::ios_base::binary);
 
-    if (!ifpeek.is_open())
-    {
-        ifpeek.close();
-        std::ofstream so("addressbook.w", std::ios_base::binary);
-        so.close();
-    } else {
-        ifpeek.close();
-    }
+    AddressBook addressBook;
 
-   std::ifstream ifs("addressbook.w", std::ios_base::binary);
-
-   AddressBookEntry ad;
-   std::string code;
-   ifs >> code;
-
-    while (!ifs.eof())
-    {
-        ad.deserialize(code);
-
-        addressbook.push_back(ad);
-
-        AddressBookEntry ad;
-        ifs >> code;
-
-    }
-
-    ifs.close();
-
-    show();
+    addressBook.load();
 
     // # Code each one of the CRUD methods here.
 
@@ -70,18 +107,21 @@ int main(int argc, char *argv[])
         std::string phone(getCommandLineParameter(argc,argv,"-phone"));
 
         AddressBookEntry ad(name, lastname, phone);
-        addressbook.push_back(ad);
+
+        addressBook.add(ad);
 
     }
 
-    show();
+    if (isPresentCommandLineParameter(argc,argv, "-remove"))
+    {
+        char *val = getCommandLineParameter(argc,argv,"-remove");
+        int entry = atoi( val );
 
+        addressBook.remove(entry);
+    }
 
-    std::ofstream so("addressbook.w", std::ios_base::binary);
-
-    for (const auto &e : addressbook) so << e.serialize() << std::endl;
-
-    so.close();
+    addressBook.show();
+    addressBook.save();
 
 
     return 0;
