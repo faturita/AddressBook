@@ -31,6 +31,18 @@ void TestCase_103::init()
 
 std::mutex vector_mutex;
 
+//
+// This test, creates two threads and access a shared AddressBook.
+// It guards the access to the the addressbox by using a mutex to avoid issues.
+// The thread_safety of vector<> is tricky.  I have used it many times directly without problems
+// (without any kind of semaphore) but sometimes for some particular applications you can have concurrency issues on
+// race conditions.  The library itself provides basic thread-safety functionality, so extra care should be taken.
+//
+// This code creates two threads, access the same addressbook, creates an entry from one of them and delete it in the other.
+//
+// It should be extended to repeat this process many times to force more complex race conditions.
+//
+
 int TestCase_103::check(unsigned long timertick)
 {
 
