@@ -117,7 +117,7 @@ int TestCase_103::number()
 
 std::string TestCase_103::title()
 {
-    return std::string("Add data concurrently.");
+    return std::string("Add data concurrently, creating two threads and modifying what the other added.");
 }
 
 

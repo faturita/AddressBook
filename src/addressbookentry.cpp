@@ -16,7 +16,7 @@
 
 AddressBookEntry::AddressBookEntry()
 {
-
+    // We allow empty entries.
 }
 
 AddressBookEntry::AddressBookEntry(std::string name, std::string lastname, std::string phone)
@@ -29,9 +29,9 @@ AddressBookEntry::AddressBookEntry(std::string name, std::string lastname, std::
 std::string AddressBookEntry::toString() const
 {
     std::string str;
-    str.append("Name:").append(Name).append("/").append(LastName);
+    str.append("Name:").append(Name).append(DELIMITER).append(LastName);
 
-    //@FIXME: phonenumber is optional
+    //@FIXME: phonenumber should be optional
     str.append("(").append(phoneNumber).append(")");
     return str;
 }
@@ -39,13 +39,14 @@ std::string AddressBookEntry::toString() const
 std::string AddressBookEntry::serialize() const
 {
     std::string str;
-    str.append(Name).append("/").append(LastName).append("/").append(phoneNumber).append("/");
+    str.append(Name).append(DELIMITER).append(LastName).append(DELIMITER).append(phoneNumber).append(DELIMITER);
     return str;
 }
 
 void AddressBookEntry::deserialize(std::string code)
 {
-    std::string del("/");
+    // @FIXME: Verify that name, lastname and phoneNumber do not contain any DELIMITER !!!
+    std::string del(DELIMITER);
     std::vector<std::string> tokens;
 
     auto pos = code.find(del);
@@ -53,7 +54,7 @@ void AddressBookEntry::deserialize(std::string code)
     {
         std::string str = code.substr(0, pos);
         code = code.substr(pos + del.length());
-        pos = code.find("/");
+        pos = code.find(del);
 
         tokens.push_back(str);
 
@@ -64,18 +65,14 @@ void AddressBookEntry::deserialize(std::string code)
     LastName = tokens[1];
     phoneNumber = tokens[2];
 
+    // @NOTE: use me for debugging
     //for (const auto &e : tokens) std::cout << e  << std::endl;
 }
 
 std::string AddressBookEntry::comp(int sorttype)
 {
-    //std::string str;
-
-    //std::transform(data.begin(), data.end(), data.begin(),
-    //    [](unsigned char c){ return std::tolower(c); });
-
-    if (sorttype==1)    return Name;
-    else                return LastName;
+    if (sorttype==NAMESORT)     return Name;
+    else                        return LastName;
 
 }
 
@@ -92,7 +89,7 @@ std::string AddressBookEntry::GetLastName()
 
 bool AddressBookEntry::operator==(AddressBookEntry ad)
 {
-    // Phone number could be different but the entry will be the same anyway.
+    // The phone number from two entries could be different but I am assumming the entry will be the same anyway.
     return (Name == ad.Name && LastName == ad.LastName);
 }
 

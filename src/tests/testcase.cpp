@@ -1,4 +1,10 @@
-
+//
+// This is a base class to create unit tests.
+//
+// It is called from tester.cpp.
+//
+//
+//
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>

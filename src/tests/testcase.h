@@ -20,7 +20,7 @@ public:
     // This method is called when the test is initialized.  It should set up everything you need for the testcase.
     virtual void init();
 
-    // This method is called at each simulation step.  The method should check the completion of the code and returns a return value (0 error).
+    // The method should check the completion of the code and returns a return value (0 error).
     virtual int check(unsigned long timertick);
 
     // Title and number of the testcase.

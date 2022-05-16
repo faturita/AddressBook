@@ -1,3 +1,21 @@
+//
+//  addressbook.cpp
+//  AddressBook
+//
+//  Basic commandline addressbook.   Nice as testbed to quickly test code or to check performance issues (or even for STEM education).
+//
+//
+//  Time to completion: 4 hours and 20 minutes.
+//
+//
+//  The main is just a wrapper for the functionalities provided by the AddressBook class, based on command line parameters.  It can add new
+//  records, list them, remove one by one, find a particular one based on partial matching for name or lastname.
+//
+//  The idea is to load everything into memory, operate on a standard vector structure, and stores everything back to a file.
+//  This is inefficient to store a lot of information, but it is very quick, it works like a in-memory database.
+//  For large files, we start to move into the realm of databases so we need to use new approaches to deal with large registers.  We can start
+//  by fixing each record to a fixed-length approach, create an index of the file, and move around based on the index.
+
 #include <stdio.h>
 #include <string.h>
 
@@ -13,10 +31,8 @@
 #include "addressbookentry.h"
 #include "addressbookclass.h"
 
-// Starting time 00:32 -> 02:20
-// 08:50
 
-
+// The main read the default addressbook (the file is created if it does not exists) perform any operation on memory and store back the result.
 int main(int argc, char *argv[])
 {
 
@@ -26,15 +42,20 @@ int main(int argc, char *argv[])
 
     // # Code each one of the CRUD methods here.
 
-    if (isPresentCommandLineParameter(argc,argv,"-add"))
+    if (isPresentCommandLineParameter(argc,argv,"-add") &&
+            isPresentCommandLineParameter(argc,argv,"-name") &&
+            isPresentCommandLineParameter(argc,argv,"-last") &&
+            isPresentCommandLineParameter(argc,argv,"-phone"))
     {
-        std::string name(getCommandLineParameter(argc,argv,"-name"));
-        std::string lastname(getCommandLineParameter(argc,argv,"-last"));
-        std::string phone(getCommandLineParameter(argc,argv,"-phone"));
+        std::string name(getDefaultedCommandLineParameter(argc,argv,"-name",""));
+        std::string lastname(getDefaultedCommandLineParameter(argc,argv,"-last",""));
+        std::string phone(getDefaultedCommandLineParameter(argc,argv,"-phone",""));
 
         AddressBookEntry ad(name, lastname, phone);
 
         addressBook.add(ad);
+
+        std::cout << "New entry added:" << ad.toString() << std::endl;
 
     }
 
@@ -44,15 +65,19 @@ int main(int argc, char *argv[])
         int entry = atoi( val );
 
         addressBook.remove(entry);
+
+        std::cout << "Entry Removed: " << entry << std::endl;
     }
 
     if (isPresentCommandLineParameter(argc,argv,"-namesort"))
     {
-        addressBook.sort(1);
+        addressBook.sort(NAMESORT);
+        std::cout << "Sorted by Name." << std::endl;
     }
     if (isPresentCommandLineParameter(argc,argv,"-lastsort"))
     {
-        addressBook.sort(2);
+        addressBook.sort(LASTNAMESORT);
+        std::cout << "Sored by Lastname." << std::endl;
     }
 
 
@@ -79,7 +104,6 @@ int main(int argc, char *argv[])
             std::cout << "Element not found." << std::endl;
         }
     }
-
 
 
     addressBook.show();

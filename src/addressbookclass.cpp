@@ -6,7 +6,7 @@
 
 AddressBook::AddressBook()
 {
-    AddressBook::filename = std::string("addressbook.w");
+    AddressBook::filename = std::string(DEFAULTFILENAME);
 }
 
 AddressBook::AddressBook(std::string filename)
@@ -17,6 +17,12 @@ AddressBook::AddressBook(std::string filename)
 void AddressBook::show()
 {
     int number = 1;
+
+    if (addressbook.size()==0)
+    {
+        std::cout << "Empty !" << std::endl;
+    }
+
     for(std::vector<AddressBookEntry>::iterator   it = addressbook.begin(); it != addressbook.end();it++ )
     {
         AddressBookEntry entry = *it;
@@ -25,13 +31,14 @@ void AddressBook::show()
     }
 }
 
-int AddressBook::findEntry(AddressBookEntry ad)
+size_t AddressBook::findEntry(AddressBookEntry ad)
 {
-    int number = 1;
+    size_t number = 1;
     for(std::vector<AddressBookEntry>::iterator   it = addressbook.begin(); it != addressbook.end();it++ )
     {
         AddressBookEntry entry = *it;
 
+        // == is overleaded for AddressBookEntry
         if (entry == ad)
         {
             return number;
@@ -43,8 +50,10 @@ int AddressBook::findEntry(AddressBookEntry ad)
 
 void AddressBook::load()
 {
+    // It could be more easily implemented using SO based functions.  It maybe a parameter to create it if it does not exist.
     std::ifstream ifpeek(filename, std::ios_base::binary);
 
+    // Check if file exists and create it if it does not.
     if (!ifpeek.is_open())
     {
         ifpeek.close();
@@ -88,22 +97,23 @@ void AddressBook::add(AddressBookEntry ad)
     addressbook.push_back(ad);
 }
 
-void AddressBook::remove(int entry)
+void AddressBook::remove(size_t entry)
 {
     // @FIXME Check boundaries.
-    addressbook.erase(addressbook.begin()+entry-1);
+
+    if (entry>addressbook.size())
+        addressbook.erase(addressbook.begin()+entry-1);
 }
 
 void AddressBook::sort(int sorttype)
 {
-    //bool myfunction (int i,int j) { return (i<j); }
+    //This is the function signature: bool myfunction (int i,int j) { return (i<j); }
 
     auto lambda = [sorttype](AddressBookEntry a, AddressBookEntry b) ->bool {
         return (a.comp(sorttype)<b.comp(sorttype));
     };
 
 
-    // using default comparison (operator <):
     std::sort (addressbook.begin(), addressbook.end(), lambda);
 
 }
@@ -127,7 +137,6 @@ std::vector<AddressBookEntry>::iterator  AddressBook::search(std::string searchk
 
 
         std::string entryname = toLower(entry.GetName());
-
         std::string entrylastname = toLower(entry.GetLastName());
 
         // Force the comparision to only accept it if it is located at the beginning of the entry.

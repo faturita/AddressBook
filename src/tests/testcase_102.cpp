@@ -38,7 +38,7 @@ int TestCase_102::check(unsigned long timertick)
 
         }
         isdone = true;
-        message = std::string("Data is stored effectively in the address book.");
+        message = std::string("No data is stored in the addressbook.");
     }
 
 
