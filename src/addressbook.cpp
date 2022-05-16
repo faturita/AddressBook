@@ -23,28 +23,41 @@ void show()
     {
         AddressBookEntry entry = *it;
 
-        std::cout << "Entry #" << number << ":" << entry.toString() << std::endl;
+        std::cout << "Entry #" << number++ << ":" << entry.toString() << std::endl;
     }
 }
 
 int main(int argc, char *argv[])
 {
-    std::ifstream ifs("addressbook.w", std::ios_base::binary);
+    std::ifstream ifpeek("addressbook.w", std::ios_base::binary);
+
+    if (!ifpeek.is_open())
+    {
+        ifpeek.close();
+        std::ofstream so("addressbook.w", std::ios_base::binary);
+        so.close();
+    } else {
+        ifpeek.close();
+    }
+
+   std::ifstream ifs("addressbook.w", std::ios_base::binary);
+
+   AddressBookEntry ad;
+   std::string code;
+   ifs >> code;
 
     while (!ifs.eof())
     {
-        AddressBookEntry ad;
-        std::string code;
-        ifs >> code;
-
         ad.deserialize(code);
 
         addressbook.push_back(ad);
 
-        std::string eol;
-        ifs >> eol;
+        AddressBookEntry ad;
+        ifs >> code;
 
     }
+
+    ifs.close();
 
     show();
 
@@ -67,6 +80,8 @@ int main(int argc, char *argv[])
     std::ofstream so("addressbook.w", std::ios_base::binary);
 
     for (const auto &e : addressbook) so << e.serialize() << std::endl;
+
+    so.close();
 
 
     return 0;
