@@ -46,6 +46,8 @@ size_t AddressBook::findEntry(AddressBookEntry ad)
 
         number++;
     }
+
+    return -1;
 }
 
 void AddressBook::load()

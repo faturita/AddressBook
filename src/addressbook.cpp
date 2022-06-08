@@ -98,6 +98,8 @@ int main(int argc, char *argv[])
 
                 int entryNumber = addressBook.findEntry(ad);
 
+                assert(entryNumber>0 && "Entry number cannot be null in this case.");
+
                 std::cout << "Found:" << ad.toString() << " at #" << entryNumber << std::endl;
             }
 

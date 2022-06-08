@@ -11,6 +11,12 @@ This way is not very efficient for a large number of records.  However, as it is
 For large files, we start to move into the realm of databases so we need to use new approaches to deal with large registers.  We can start
 by fixing each record to a fixed-length approach, create an index of the file, and move around based on the index.
 
+# TODO
+* Compile on windows
+* Add const in some of the methods to avoid copying objects excesively.
+* Add some extra performances improvements.
+
+
 # Compiling
 
 ```bash
