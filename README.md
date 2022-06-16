@@ -18,6 +18,10 @@ by structuring each record as fixed-length, creating an index of the file, and u
 * Add const in some of the methods to avoid copying objects excesively.
 * Add some extra performances improvements.
 
+# Optimization (performance, memory usage)
+
+Everything you do has a particular curve, and I am very convinced so far, that early optimization is a bad decision. There's a simple principle about optimization. The more optimized and fine-tuned a system is, the more fragile it is to a major shock.  This applies to software perfectly.  A system which is heavily early-optimized is much more prone to bugs, less flexible, less adaptable to changing requirements (which are likely because it is very early).
+
 
 # Compiling
 
